@@ -1,0 +1,84 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>My diary</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="form_login.css">
+</head>
+<body style="">
+
+<div style="min-height: calc(100vh - 70px);">
+    <nav class="navbar navbar-light bg-light d-flex navbar-expand mb-5 fixed-top">
+        <!--logo section-->
+        <a class="navbar-brand" href="#">
+            <!--<img src="Bomb.png">-->
+            <p class="my-auto">LOGO</p>
+        </a>
+        <div class="d-flex ml-auto">
+            <ul class="navbar-nav flex-fill pl-md-5 text-nowrap">
+
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-item mx-2">
+                        <a class="nav-link btn btn-primary text-white" href="{% url 'auth:log_in' %}">Логин</a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item mx-2">
+                        <a class="nav-link " href="{% url 'diary:index' %}">Публичные записи</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link " href="{% url 'diary:post' %}">Мои записи</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link btn btn-primary text-white" href="{% url 'auth:log_out' %}">Выйти</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div style="margin-top: 70px">
+
+        {% if not request.user.is_authenticated %}
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <div>
+                    <form class="form-signin m-5 p-5" action="/auth/" method="post">
+                        {% csrf_token %}
+                        <h1 class="h3 mb-3 font-weight-normal">Введите данные учетной записи</h1>
+                        <label for="login" class="sr-only">Email address</label>
+                        <input name="username" type="text" id="login" class="form-control my-4" placeholder="Login" required autofocus>
+                        <label for="inputPassword" class="sr-only">Password</label>
+                        <input name="password" type="password" id="inputPassword" class="form-control mt-4 " placeholder="Password"
+                               required>
+{#                        <div class="form-check my-3">#}
+                            <input type="checkbox" class="form-check-input" id="register" name="register">
+                            <label class="form-check-label" for="register">У меня нет учетной записи</label>
+{#                        </div>#}
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Логин</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            {% block content %}
+            {% endblock %}
+
+        {% endif %}
+    </div>
+
+
+</div>
+
+<div class="mt-5 bg-secondary" style="height: 50px">
+    <footer class="footer ">
+        <div class="container text-center pt-2">
+            <span class="text-white">Contact: </span><a class="text-white font-weight-bold" href="vk.com/colond">vk.com/colond</a>
+        </div>
+    </footer>
+</div>
+
+
+</body>
+</html>
